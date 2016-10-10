@@ -198,7 +198,7 @@ function createBoxTileVoid(x, y) {
   return box;
 }
 
-screen.key(['q', 'C-c'], function(ch, key) {
+screen.key(['escape', 'q', 'C-c'], function(ch, key) {
   saveData();
   return screen.destroy();
 });
