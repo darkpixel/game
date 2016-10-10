@@ -40,75 +40,7 @@ var world = {
   map: {}
 };
 
-var tile_types = {
-  water: {
-    name: 'water',
-    display: 'WW',
-    color: 'blue',
-    danger: 5
-  },
-  plains: {
-    name: 'plains',
-    display: '--',
-    color: 'green',
-    danger: 5
-  },
-  impassablemountain: {
-    name: 'impassable mountains',
-    display: 'MM',
-    color: 'white',
-    danger: 5
-  },
-  desert: {
-    name: 'desert',
-    display: '..',
-    color: 'yellow',
-    danger: 5
-  },
-  mountains: {
-    name: 'mountains',
-    display: 'mm',
-    color: 'magenta',
-    danger: 5
-  },
-  road: {
-    name: 'road',
-    display: '||',
-    color: 'white',
-    danger: 5
-  },
-  wastelands: {
-    name: 'wastelands',
-    display: 'ww',
-    color: 'green',
-    danger: 5
-  },
-  river: {
-    name: 'river',
-    display: '~~',
-    color: 'blue',
-    danger: 5
-  },
-  swamp: {
-    name: 'swamp',
-    display: '""',
-    color: 'cyan',
-    danger: 5
-  },
-  radiation: {
-    name: 'radiation',
-    display: 'rr',
-    color: 'red',
-    danger: 5
-  },
-  forrest: {
-    name: 'forrest',
-    display: 'ff',
-    color: 'green',
-    danger: 5
-  }
-};
-
+var tile_types = require('./data/tile_types.json');
 
 var listbar = blessed.listbar({
   autoCommandKeys: true,
