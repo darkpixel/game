@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var os = require('os');
-// var debug = require('debug')('worldgen');
 var colors = require('colors/safe');
 var blessed = require('blessed');
 var my_x = 0;
@@ -9,20 +8,13 @@ var my_y = 0;
 var my_sight = 5;
 var screen = blessed.screen({
   smartCSR: true,
-  dockBorders: false
+  dockBorders: false,
+  autoPadding: true,
+  debug: true
 });
 
 screen.key(['escape', 'q', 'C-c'], function(ch, key) {
   return screen.destroy();
-});
-
-var log = blessed.log({
-  top: 25,
-  left: 0,
-  content: 'test log',
-  border: {
-    type: 'line'
-  }
 });
 
 var tlog = blessed.log({
@@ -35,11 +27,8 @@ var tlog = blessed.log({
 });
 
 function debug(data) {
-  log.log(data);
+  screen.debug(data);
 }
-
-screen.append(log);
-screen.render();
 
 var x_size = 255;
 var y_size = 255;
@@ -120,6 +109,38 @@ var tile_types = {
   }
 };
 
+
+var listbar = blessed.listbar({
+  autoCommandKeys: true,
+  height: true,
+  top: screen.height - 1,
+  shrink: true,
+  width: 100,
+  style: {
+    bg: 'red',
+    fg: 'white',
+    selected: {
+      bg: 'red',
+      fg: 'white'
+    },
+    item: {
+      bg: 'red',
+      fg: 'white'
+    }
+  }
+});
+
+function createCB(tile_to_pass) {
+  return function() {
+    menucallback(tile_to_pass);
+  };
+}
+
+for (var i = 0; i <= Object.keys(tile_types).length - 1; i++) {
+
+  listbar.addItem(tile_types[Object.keys(tile_types)[i]].name, createCB(tile_types[Object.keys(tile_types)[i]]));
+}
+
 for (var x = 0; x <= x_size; x++) {
   if (!world.map[x]) {
     world.map[x] = {};
@@ -127,7 +148,12 @@ for (var x = 0; x <= x_size; x++) {
   for (var y = 0; y <= y_size; y++) {
     var randomTileNumber = getRandomIntInclusive(0, Object.keys(tile_types).length - 1);
     var randomTile = tile_types[Object.keys(tile_types)[randomTileNumber]];
-    world.map[x][y] = randomTile;
+    if (x === 0 || y === 0) {
+      world.map[x][y] = tile_types.impassablemountain;
+
+    } else {
+      world.map[x][y] = tile_types.plains;
+    }
   }
 }
 
@@ -159,10 +185,6 @@ function displayMap(themap, x, y, visibility) {
     yend = Object.keys(themap[0]).length - 1;
   }
 
-  debug('Looking from: ' + x + ',' + y);
-  debug('Visibility: ' + viz);
-  debug('x start ' + xstart + ' x end ' + xend);
-  debug('y start ' + ystart + ' y end ' + yend);
   var screenX = 0;
   var screenY = 0;
 
@@ -184,7 +206,7 @@ function displayMap(themap, x, y, visibility) {
       }
       if (xv === x && yv === y) {
         tlog.log('X: ' + x + ' Y: ' + y);
-        tlog.log(themap[x][y]);
+        debug(themap[x][y]);
       }
     }
     // process.stdout.write(os.EOL);
@@ -221,7 +243,6 @@ function createBoxTile(themap, x, y, my_position) {
   });
   if (my_position) {
     box.options.style.border.fg = 'red';
-    debug('I am at ' + x + ' ' + y + ' ' + my_position);
   }
   return box;
 }
@@ -245,7 +266,8 @@ function createBoxTileVoid(x, y) {
   return box;
 }
 
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+screen.key(['q', 'C-c'], function(ch, key) {
+  saveData();
   return screen.destroy();
 });
 screen.key('left', function(ch, key) {
@@ -255,7 +277,6 @@ screen.key('left', function(ch, key) {
     my_x--;
   }
   displayMap(world.map, my_x, my_y, my_sight);
-  screen.render();
 });
 
 screen.key('right', function(ch, key) {
@@ -265,7 +286,6 @@ screen.key('right', function(ch, key) {
     my_x++;
   }
   displayMap(world.map, my_x, my_y, my_sight);
-  screen.render();
 });
 
 screen.key('up', function(ch, key) {
@@ -275,7 +295,6 @@ screen.key('up', function(ch, key) {
     my_y--;
   }
   displayMap(world.map, my_x, my_y, my_sight);
-  screen.render();
 });
 
 screen.key('down', function(ch, key) {
@@ -285,28 +304,41 @@ screen.key('down', function(ch, key) {
     my_y++;
   }
   displayMap(world.map, my_x, my_y, my_sight);
-  screen.render();
 });
 
 screen.key('s', function(ch, key) {
   debug('save triggered');
-  var fs = require('fs');
-  var mapfile = fs.writeFileSync('./world.json', JSON.stringify(world, null, 2));
+  saveData();
   debug('save complete');
 });
 
+function saveData() {
+  var fs = require('fs');
+  var mapfile = fs.writeFileSync('./world.json', JSON.stringify(world, null, 2));
+}
+
+function loadData() {
+  var fs = require('fs');
+  world = JSON.parse(fs.readFileSync('./world.json'));
+}
+
 screen.key('l', function(ch, key) {
   debug('load triggered');
-  var fs = require('fs');
-  var world = JSON.parse(fs.readFileSync('./world.json'));
+  loadData();
   debug('load complete');
   my_x = 0;
   my_y = 0;
   displayMap(world.map, my_x, my_y, my_sight);
-  screen.render();
 });
 
+function menucallback(tile_type) {
+  debug(tile_type);
+  world.map[my_x][my_y] = tile_type;
+  displayMap(world.map, my_x, my_y, my_sight);
+}
 
 screen.append(tlog);
+screen.append(listbar);
+loadData();
 displayMap(world.map, my_x, my_y, my_sight);
 screen.render();
