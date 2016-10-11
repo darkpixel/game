@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+
+var os = require('os');
+var colors = require('colors/safe');
+var debug = require('debug')('chargen');
+var rl = require('readline-sync');
+
+var char_types = {
+  'human': {
+    name: 'human'
+  },
+
+  'dwarf': {
+    name: 'dwarf'
+  },
+  'elf': {
+    name: 'elf'
+  },
+  'gnome': {
+    name: 'gnome'
+  },
+  'half-elf': {
+    name: 'half-elf'
+  },
+  'half-orc': {
+    name: 'half-orc'
+  },
+  'halfling': {
+    name: 'haffling'
+  }
+};
+
+var chars = {
+  default: {
+    strength: 21,
+    dexterity: 21,
+    agility: 21,
+    hp: 25,
+    gp: 2000,
+    exp: 0,
+    alive: true,
+    male: true,
+    max_hp: 25,
+    level: 1,
+    map_x: 0,
+    map_y: 0,
+    hunger: 0,
+    sr: 'dagger',
+    lr: 'bow',
+    armor: 'shirt',
+    inventory: [
+      {name: 'medkit', uses: 25},
+      {name: 'rations', uses: 5},
+      {name: 'knife'}
+    ],
+    stats: {
+      hits: 0,
+      misses: 0,
+      combat: 0,
+      kills: 0,
+      flee: 0,
+      surrender: 0
+    }
+  }
+};
+
+function getRandomIntInclusive(min_val, max_val) {
+  var min = Math.ceil(min_val);
+  var max = Math.floor(max_val);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function saveData() {
+  var fs = require('fs');
+  fs.writeFileSync('./characters.json', JSON.stringify(chars, null, 2));
+}
+
+function loadData() {
+  var fs = require('fs');
+  chars = JSON.parse(fs.readFileSync('./characters.json'));
+}
+
+var number_of_characters = rl.questionInt('How many characters will be playing the game?');
+var random_types = rl.keyInYN('Should the system randomly pick character classes?');
+// if (!random_types) {
+//   var character_choice = rl.keyInSelect(Object.keys(char_types), 'What should player 1 be?', {cancel: false});
+//   debug('Character: ' + Object.keys(char_types)[character_choice]);
+// }
+//
+//
+debug('Generating ' + number_of_characters + ' players');
+debug('Random: ' + random_types);
+
+for (var i = 1; i <= number_of_characters; i++) {
+  var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
+  var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
+  chars[i] = {};
+  chars[i].race = randomCharacter.name;
+  Object.assign(chars[i], chars.default);
+}
+
+debug(chars);
+
