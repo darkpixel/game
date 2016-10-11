@@ -246,7 +246,7 @@ screen.key('s', function(ch, key) {
 
 function saveData() {
   var fs = require('fs');
-  var mapfile = fs.writeFileSync('./world.json', JSON.stringify(world, null, 2));
+  fs.writeFileSync('./world.json', JSON.stringify(world, null, 2));
 }
 
 function loadData() {
