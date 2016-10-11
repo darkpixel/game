@@ -19,6 +19,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "colors": "^1.1.2",
-    "debug": "^2.2.0"
+    "debug": "^2.2.0",
+    "readline-sync": "^1.4.4"
   }
 }
