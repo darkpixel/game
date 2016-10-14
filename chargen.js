@@ -93,6 +93,7 @@ try {
 }
 
 var player_real_name = rl.question('What is the real name for character? ');
+var player_gender = rl.keyInYN('Male? ');
 var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
 var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
 var randomNameNumber = getRandomIntInclusive(0, names.length.length - 1);
@@ -101,6 +102,11 @@ debug(randomName);
 
 var player = {};
 player.real_name = player_real_name;
+if (player_gender) {
+  player.gender = 'male';
+} else {
+  player.gender = 'female';
+}
 player.name = randomName;
 player.race = randomCharacter.name;
 Object.assign(player, chars.default);
