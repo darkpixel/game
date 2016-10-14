@@ -4,6 +4,9 @@ var os = require('os');
 var colors = require('colors/safe');
 var debug = require('debug')('chargen');
 var rl = require('readline-sync');
+var prettyjson = require('prettyjson');
+
+// var char_types = require('./data/character_types.json');
 
 var char_types = {
   'human': {
@@ -26,12 +29,13 @@ var char_types = {
     name: 'half-orc'
   },
   'halfling': {
-    name: 'haffling'
+    name: 'hafling'
   }
 };
 
 var chars = {
   default: {
+    // base attributes
     strength: 21,
     dexterity: 21,
     agility: 21,
@@ -49,9 +53,9 @@ var chars = {
     lr: 'bow',
     armor: 'shirt',
     inventory: [
-      {name: 'medkit', uses: 25},
-      {name: 'rations', uses: 5},
-      {name: 'knife'}
+    {name: 'medkit', uses: 25},
+    {name: 'rations', uses: 5},
+    {name: 'knife'}
     ],
     stats: {
       hits: 0,
@@ -61,7 +65,8 @@ var chars = {
       flee: 0,
       surrender: 0
     }
-  }
+  },
+  players: []
 };
 
 function getRandomIntInclusive(min_val, max_val) {
@@ -80,24 +85,17 @@ function loadData() {
   chars = JSON.parse(fs.readFileSync('./characters.json'));
 }
 
-var number_of_characters = rl.questionInt('How many characters will be playing the game?');
-var random_types = rl.keyInYN('Should the system randomly pick character classes?');
-// if (!random_types) {
-//   var character_choice = rl.keyInSelect(Object.keys(char_types), 'What should player 1 be?', {cancel: false});
-//   debug('Character: ' + Object.keys(char_types)[character_choice]);
-// }
-//
-//
-debug('Generating ' + number_of_characters + ' players');
-debug('Random: ' + random_types);
+loadData();
 
-for (var i = 1; i <= number_of_characters; i++) {
-  var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
-  var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
-  chars[i] = {};
-  chars[i].race = randomCharacter.name;
-  Object.assign(chars[i], chars.default);
-}
+var player_real_name = rl.question('What is the real name for character? ');
+var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
+var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
+var player = {};
+player.real_name = player_real_name;
+player.race = randomCharacter.name;
+Object.assign(player, chars.default);
+chars.players.push(player);
 
-debug(chars);
+debug(prettyjson.render(chars));
 
+saveData();
