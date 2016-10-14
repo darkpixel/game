@@ -5,6 +5,7 @@ var colors = require('colors/safe');
 var debug = require('debug')('chargen');
 var rl = require('readline-sync');
 var prettyjson = require('prettyjson');
+var names = require('./data/names.json');
 
 // var char_types = require('./data/character_types.json');
 
@@ -94,8 +95,13 @@ try {
 var player_real_name = rl.question('What is the real name for character? ');
 var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
 var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
+var randomNameNumber = getRandomIntInclusive(0, names.length.length - 1);
+var randomName = names[randomCharacterNumber];
+debug(randomName);
+
 var player = {};
 player.real_name = player_real_name;
+player.name = randomName;
 player.race = randomCharacter.name;
 Object.assign(player, chars.default);
 chars.players.push(player);
