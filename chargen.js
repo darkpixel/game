@@ -85,7 +85,11 @@ function loadData() {
   chars = JSON.parse(fs.readFileSync('./characters.json'));
 }
 
-loadData();
+try {
+  loadData();
+} catch (err) {
+  // ignore file-not-found
+}
 
 var player_real_name = rl.question('What is the real name for character? ');
 var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
@@ -96,6 +100,7 @@ player.race = randomCharacter.name;
 Object.assign(player, chars.default);
 chars.players.push(player);
 
+saveData();
+
 debug(prettyjson.render(chars));
 
-saveData();
