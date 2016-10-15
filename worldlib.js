@@ -4,7 +4,6 @@ var exports = module.exports = {};
 
 var os = require('os');
 var colors = require('colors/safe');
-var world = require('./world.json');
 var tile_types = require('./data/tile_types.json');
 var debug = require('debug')('worldlib');
 
