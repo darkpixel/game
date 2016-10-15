@@ -99,7 +99,7 @@ function renderMap(themap, map_x, map_y) {
       if (view[x][y].colorized) {
         box_data += view[x][y].colorized;
       } else {
-        box_data += ' ';
+        box_data += '  ';
       }
     }
     box_data += os.EOL;
