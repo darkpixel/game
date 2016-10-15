@@ -6,6 +6,7 @@ var os = require('os');
 var colors = require('colors/safe');
 var tile_types = require('./data/tile_types.json');
 var debug = require('debug')('worldlib');
+var prettyjson = require('prettyjson');
 
 function getRandomIntInclusive(min_val, max_val) {
   var min = Math.ceil(min_val);
@@ -30,16 +31,24 @@ module.exports.getView = function (themap, x, y, visibility) {
   debug('Corrected visibility: ' + viz);
 
   for (var yv = y - viz; yv <= y + viz; yv++) {
+    debug('yv: ' + yv);
     for (var xv = x - viz; xv <= x + viz; xv++) {
+      debug('xv: ' + xv);
       if (!view[view_x]) {
+        debug('Creating x row ' + view_x);
         view[view_x] = {};
       }
       if (!view[view_x][view_y]) {
+        debug('Creating y row ' + view_y);
         view[view_x][view_y] = {};
       }
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
         view[view_x][view_y] = themap[xv][yv];
-        view[view_x][view_y].colorized = colors[themap[xv][yv].color](themap[xv][yv].display);
+        if (xv === x && yv === y) {
+          view[view_x][view_y].colorized = colors[themap[xv][yv].color].bgWhite(themap[xv][yv].display);
+        } else {
+          view[view_x][view_y].colorized = colors[themap[xv][yv].color](themap[xv][yv].display);
+        }
       } else {
         view[view_x][view_y] = {};
       }

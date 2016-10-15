@@ -25,8 +25,10 @@ var screen = blessed.screen({
 
 var grid = new bc.grid({rows: 12, cols: 12, screen: screen});
 
-var mapbox = grid.set(0, 0, 12, 3, blessed.box, {
-  title: 'mapdata'
+var mapbox = grid.set(0, 0, 12, 3, blessed.text, {
+  title: 'mapdata',
+  align: 'left',
+  valign: 'top'
 });
 
 var tlog = grid.set(0, 3, 12, 9, blessed.log, {
