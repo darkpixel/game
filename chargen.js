@@ -6,6 +6,7 @@ var debug = require('debug')('chargen');
 var rl = require('readline-sync');
 var prettyjson = require('prettyjson');
 var names = require('./data/names.json');
+var lib = require('./lib');
 
 // var char_types = require('./data/character_types.json');
 
@@ -76,18 +77,8 @@ function getRandomIntInclusive(min_val, max_val) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function saveData() {
-  var fs = require('fs');
-  fs.writeFileSync('./characters.json', JSON.stringify(chars, null, 2));
-}
-
-function loadData() {
-  var fs = require('fs');
-  chars = JSON.parse(fs.readFileSync('./characters.json'));
-}
-
 try {
-  loadData();
+  chars = lib.loadData('characters');
 } catch (err) {
   // ignore file-not-found
 }
@@ -112,7 +103,7 @@ player.race = randomCharacter.name;
 Object.assign(player, chars.default);
 chars.players.push(player);
 
-saveData();
+lib.saveData('characters', chars);
 
 debug(prettyjson.render(chars));
 

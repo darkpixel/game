@@ -3,10 +3,29 @@
 var exports = module.exports = {};
 
 var os = require('os');
+var fs = require('fs');
 var colors = require('colors/safe');
 var world = require('./world.json');
 var tile_types = require('./data/tile_types.json');
 var debug = require('debug')('worldlib');
+
+module.exports.saveData = function(fname, json_data) {
+  // Takes a filename and a JSON.stringify-able object and saves it.  A '.json' extension will be automatically added
+  // to the fname.  This will be handy if we decide to change game data paths at some point.  CWD sorta sucks.
+  // Returns true if the data was save and something that evaluates to false if it failed.
+  var fn = './' + fname + '.json';
+  debug('Saving data to ' + fn);
+  fs.writeFileSync(fn, JSON.stringify(json_data, null, 2));
+  return true;
+};
+
+module.exports.loadData = function(fname) {
+  // See comments in saveData()
+  // Loads data from a file that can be JSON.parse'd
+  var fn = './' + fname + '.json';
+  debug('Loading data from ' + fn);
+  return JSON.parse(fs.readFileSync(fn));
+};
 
 module.exports.getRandom = function(min_val, max_val) {
   // Gets a random value between min_val and max_val inclusive.
