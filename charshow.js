@@ -97,9 +97,10 @@ loadData();
 chars.players.forEach(function(player) {
   console.warn(player.real_name);
   console.log(player.name + ' (' + player.race + ')');
-  if (player.x && player.y) {
-    console.log('X:' + player.x + ' Y:' + player.y);
-    displayMap(world.map, player.x, player.y);
+  if (player.map_x && player.map_y) {
+    console.log('X:' + player.map_x + ' Y:' + player.map_y);
+    displayMap(world.map, player.map_x, player.map_y);
+    console.log(world.map[player.map_x][player.map_y].name + ' (' + world.map[player.map_x][player.map_y].danger + '%)');
   } else {
     console.warn('Unknown location');
   }
