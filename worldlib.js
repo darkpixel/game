@@ -14,6 +14,12 @@ function getRandomIntInclusive(min_val, max_val) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+module.exports.getTileData = function(themap, x, y) {
+  // Takes an x and y coordinate and returns the tile data
+
+  return themap[x][y];
+};
+
 module.exports.getView = function (themap, x, y, visibility) {
   // Accepts a copy of the map, curent x and y coordinates along with an optional visibility distance around you
   // and returns a small x/y array of tiles to display.  Visibility is optional and defaults to 3 tiles.
