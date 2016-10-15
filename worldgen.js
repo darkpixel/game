@@ -51,7 +51,6 @@ if (world && overwrite || !world) {
   console.log('');
   console.log('"The fires of dawn…!" breathed Zaphod. "The twin suns of Soulianis and Rahm...!"');
   console.log('');
-  console.log('"Or whatever" said Ford quietly.');
 
   world.map = {};
   for (var x = 0; x <= x_size; x++) {
@@ -72,8 +71,11 @@ if (world && overwrite || !world) {
       }
     }
   }
-
   lib.saveData('world', world);
+
+  console.log('');
+  console.log('"Or whatever" said Ford quietly.');
+  console.log('');
   console.log(world.name + ' created and saved.');
   debug(world);
 } else {
