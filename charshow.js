@@ -15,9 +15,6 @@ if (!world) {
   console.log('Unable to load world data, not displaying map info');
 }
 
-// var char_types = require('./data/character_types.json');
-
-
 function displayMap(themap, x, y, visibility) {
   var viz = visibility || 3;
   var displayString = '';
@@ -61,31 +58,6 @@ function displayTile(themap, x, y, my_position) {
 function displayEmptyTile() {
   process.stdout.write('__ ');
 }
-
-var char_types = {
-  'human': {
-    name: 'human'
-  },
-
-  'dwarf': {
-    name: 'dwarf'
-  },
-  'elf': {
-    name: 'elf'
-  },
-  'gnome': {
-    name: 'gnome'
-  },
-  'half-elf': {
-    name: 'half-elf'
-  },
-  'half-orc': {
-    name: 'half-orc'
-  },
-  'halfling': {
-    name: 'hafling'
-  }
-};
 
 chars = lib.loadData('characters');
 
