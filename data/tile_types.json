@@ -15,7 +15,8 @@
     "name": "impassable mountains",
     "display": "MM",
     "color": "white",
-    "danger": 5
+    "danger": 5,
+    "impassable": true
   },
   "desert": {
     "name": "desert",
