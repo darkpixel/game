@@ -3,6 +3,7 @@
 var os = require('os');
 var colors = require('colors/safe');
 var blessed = require('blessed');
+var lib = require('./lib');
 var my_x = 0;
 var my_y = 0;
 var my_sight = 5;
@@ -198,7 +199,7 @@ function createBoxTileVoid(x, y) {
 }
 
 screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  saveData();
+  lib.saveData('world', world);
   return screen.destroy();
 });
 screen.key('left', function(ch, key) {
@@ -239,23 +240,13 @@ screen.key('down', function(ch, key) {
 
 screen.key('s', function(ch, key) {
   debug('save triggered');
-  saveData();
+  lib.saveData('world', world);
   debug('save complete');
 });
 
-function saveData() {
-  var fs = require('fs');
-  fs.writeFileSync('./world.json', JSON.stringify(world, null, 2));
-}
-
-function loadData() {
-  var fs = require('fs');
-  world = JSON.parse(fs.readFileSync('./world.json'));
-}
-
 screen.key('l', function(ch, key) {
   debug('load triggered');
-  loadData();
+  world = lib.loadData('world');
   debug('load complete');
   my_x = 0;
   my_y = 0;
@@ -270,6 +261,6 @@ function menucallback(tile_type) {
 
 screen.append(tlog);
 screen.append(listbar);
-loadData();
+world = lib.loadData('world');
 displayMap(world.map, my_x, my_y, my_sight);
 screen.render();
