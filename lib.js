@@ -5,9 +5,7 @@ var exports = module.exports = {};
 var os = require('os');
 var fs = require('fs');
 var colors = require('colors/safe');
-var world = require('./world.json');
-var tile_types = require('./data/tile_types.json');
-var debug = require('debug')('worldlib');
+var debug = require('debug')('lib');
 
 module.exports.saveData = function(fname, json_data) {
   // Takes a filename and a JSON.stringify-able object and saves it.  A '.json' extension will be automatically added
