@@ -22,7 +22,12 @@ module.exports.loadData = function(fname) {
   // Loads data from a file that can be JSON.parse'd
   var fn = './userdata/' + fname + '.json';
   debug('Loading data from ' + fn);
-  return JSON.parse(fs.readFileSync(fn));
+  try {
+    return JSON.parse(fs.readFileSync(fn));
+  } catch (err) {
+    debug('Error loading file ' + fname + ': ' + err);
+    return null;
+  }
 };
 
 module.exports.getRandom = function(min_val, max_val) {
