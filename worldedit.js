@@ -232,6 +232,7 @@ screen.key('s', function(ch, key) {
 screen.key('l', function(ch, key) {
   debug('load triggered');
   world = lib.loadData('world');
+  screen.title = world.name;
   debug('load complete');
   my_x = 0;
   my_y = 0;
@@ -246,6 +247,6 @@ function menucallback(tile_type) {
 
 screen.append(tlog);
 screen.append(listbar);
-world = lib.loadData('world');
+screen.title = world.name;
 displayMap(world.map, my_x, my_y, my_sight);
 screen.render();
