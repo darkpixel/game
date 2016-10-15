@@ -11,6 +11,10 @@ var prettyjson = require('prettyjson');
 var world = lib.loadData('world');
 var chars = {};
 
+if (!world) {
+  console.log('Unable to load world data, not displaying map info');
+}
+
 // var char_types = require('./data/character_types.json');
 
 
@@ -85,23 +89,27 @@ var char_types = {
 
 chars = lib.loadData('characters');
 
-chars.players.forEach(function(player) {
-  console.warn(player.real_name);
-  console.log(player.name + ' (' + player.race + ')');
-  if (player.map_x && player.map_y) {
-    console.log('X:' + player.map_x + ' Y:' + player.map_y);
-    displayMap(world.map, player.map_x, player.map_y);
-    console.log(world.map[player.map_x][player.map_y].name + ' (' + world.map[player.map_x][player.map_y].danger + '%)');
-  } else {
-    console.warn('Unknown location');
-  }
-  console.log('HP: ' + player.max_hp + '/' + player.hp);
-  console.log('Exp: ' + player.exp);
-  console.info('Inventory: ');
-  for (var i = 0; i < player.inventory.length - 1; i++) {
-    console.info(player.inventory[i]);
-  }
-  console.log(os.EOL);
-});
-
-
+if (!chars) {
+  console.log('No characters exist!');
+} else {
+  chars.players.forEach(function(player) {
+    console.warn(player.real_name);
+    console.log(player.name + ' (' + player.race + ')');
+    if (player.map_x && player.map_y) {
+      console.log('X:' + player.map_x + ' Y:' + player.map_y);
+      if (world) {
+        displayMap(world.map, player.map_x, player.map_y);
+        console.log(world.map[player.map_x][player.map_y].name + ' (' + world.map[player.map_x][player.map_y].danger + '%)');
+      }
+    } else {
+      console.warn('Unknown location');
+    }
+    console.log('HP: ' + player.max_hp + '/' + player.hp);
+    console.log('Exp: ' + player.exp);
+    console.info('Inventory: ');
+    for (var i = 0; i < player.inventory.length - 1; i++) {
+      console.info(player.inventory[i]);
+    }
+    console.log(os.EOL);
+  });
+}
