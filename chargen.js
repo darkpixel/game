@@ -8,88 +8,18 @@ var prettyjson = require('prettyjson');
 var names = require('./data/names.json');
 var lib = require('./lib');
 
-// var char_types = require('./data/character_types.json');
+var char_types = lib.loadDefs('char_types');
+var char_defaults = lib.loadDefs('char_defaults');
 
-var char_types = {
-  'human': {
-    name: 'human'
-  },
-
-  'dwarf': {
-    name: 'dwarf'
-  },
-  'elf': {
-    name: 'elf'
-  },
-  'gnome': {
-    name: 'gnome'
-  },
-  'half-elf': {
-    name: 'half-elf'
-  },
-  'half-orc': {
-    name: 'half-orc'
-  },
-  'halfling': {
-    name: 'hafling'
-  }
-};
-
-var chars = {
-  default: {
-    // base attributes
-    strength: 21,
-    dexterity: 21,
-    agility: 21,
-    hp: 25,
-    gp: 2000,
-    exp: 0,
-    alive: true,
-    male: true,
-    max_hp: 25,
-    level: 1,
-    map_x: 0,
-    map_y: 0,
-    hunger: 0,
-    sr: 'dagger',
-    lr: 'bow',
-    armor: 'shirt',
-    inventory: [
-    {name: 'medkit', uses: 25},
-    {name: 'rations', uses: 5},
-    {name: 'knife'}
-    ],
-    stats: {
-      hits: 0,
-      misses: 0,
-      combat: 0,
-      kills: 0,
-      flee: 0,
-      surrender: 0
-    }
-  },
-  players: []
-};
-
-function getRandomIntInclusive(min_val, max_val) {
-  var min = Math.ceil(min_val);
-  var max = Math.floor(max_val);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-try {
-  chars = lib.loadData('characters');
-} catch (err) {
-  // ignore file-not-found
+var chars = lib.loadData('characters');
+if (!chars) {
+  debug('No character data, initializing characters object');
+  chars = {};
+  chars.players = [];
 }
 
 var player_real_name = rl.question('What is the real name for character? ');
 var player_gender = rl.keyInYN('Male? ');
-var randomCharacterNumber = getRandomIntInclusive(0, Object.keys(char_types).length - 1);
-var randomCharacter = char_types[Object.keys(char_types)[randomCharacterNumber]];
-var randomNameNumber = getRandomIntInclusive(0, names.length.length - 1);
-var randomName = names[randomCharacterNumber];
-debug(randomName);
 
 var player = {};
 player.real_name = player_real_name;
@@ -98,9 +28,9 @@ if (player_gender) {
 } else {
   player.gender = 'female';
 }
-player.name = randomName;
-player.race = randomCharacter.name;
-Object.assign(player, chars.default);
+player.name = lib.getRandomArray(names);
+player.race = lib.getRandomObject(char_types);
+Object.assign(player, char_defaults.default);
 chars.players.push(player);
 
 lib.saveData('characters', chars);

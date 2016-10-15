@@ -1,0 +1,41 @@
+{
+  "default": {
+    "strength": 21,
+    "dexterity": 21,
+    "agility": 21,
+    "hp": 25,
+    "gp": 2000,
+    "exp": 0,
+    "alive": true,
+    "male": true,
+    "max_hp": 25,
+    "level": 1,
+    "map_x": 0,
+    "map_y": 0,
+    "hunger": 0,
+    "sr": "dagger",
+    "lr": "bow",
+    "armor": "shirt",
+    "inventory": [
+      {
+        "name": "medkit",
+        "uses": 25
+      },
+      {
+        "name": "rations",
+        "uses": 5
+      },
+      {
+        "name": "knife"
+      }
+    ],
+    "stats": {
+      "hits": 0,
+      "misses": 0,
+      "combat": 0,
+      "kills": 0,
+      "flee": 0,
+      "surrender": 0
+    }
+  }
+}

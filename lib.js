@@ -17,6 +17,12 @@ module.exports.saveData = function(fname, json_data) {
   return true;
 };
 
+module.exports.loadDefs = function(fname) {
+  var fn = './data/' + fname + '.json';
+  debug('Loading def from ' + fn);
+  return JSON.parse(fs.readFileSync(fn));
+};
+
 module.exports.loadData = function(fname) {
   // See comments in saveData()
   // Loads data from a file that can be JSON.parse'd

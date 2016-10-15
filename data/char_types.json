@@ -1,0 +1,23 @@
+{
+  "human": {
+    "name": "human"
+  },
+  "dwarf": {
+    "name": "dwarf"
+  },
+  "elf": {
+    "name": "elf"
+  },
+  "gnome": {
+    "name": "gnome"
+  },
+  "half-elf": {
+    "name": "half-elf"
+  },
+  "half-orc": {
+    "name": "half-orc"
+  },
+  "halfling": {
+    "name": "halfling"
+  }
+}
