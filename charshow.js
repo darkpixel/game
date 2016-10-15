@@ -110,6 +110,7 @@ chars.players.forEach(function(player) {
   for (var i = 0; i < player.inventory.length - 1; i++) {
     console.info(player.inventory[i]);
   }
+  console.log(os.EOL);
 });
 
 
