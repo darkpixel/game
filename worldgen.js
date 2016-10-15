@@ -99,7 +99,6 @@ function getRandomIntInclusive(min_val, max_val) {
 
 function displayMap(themap, x, y, visibility) {
   var viz = visibility || 3;
-  var displayString = '';
   var xstart = x - viz;
   if (xstart < 0) {
     xstart = 0;
