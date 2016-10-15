@@ -18,6 +18,13 @@
     "danger": 5,
     "impassable": true
   },
+  "volcano": {
+    "name": "volcano",
+    "display": "VV",
+    "color": "red",
+    "danger": 5,
+    "impassable": true
+  },
   "desert": {
     "name": "desert",
     "display": "..",
