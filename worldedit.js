@@ -7,6 +7,13 @@ var lib = require('./lib');
 var my_x = 0;
 var my_y = 0;
 var my_sight = 5;
+
+world = lib.loadData('world');
+if (!world) {
+  console.log('There is no world to edit.  Perhaps you want to run worldgen?');
+  return;
+}
+
 var screen = blessed.screen({
   smartCSR: true,
   dockBorders: false,
