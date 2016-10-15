@@ -5,6 +5,7 @@ var colors = require('colors/safe');
 var blessed = require('blessed');
 var bc = require('blessed-contrib');
 var lib = require('./lib');
+var worldlib = require('./worldlib');
 var my_x = 0;
 var my_y = 0;
 var my_sight = 5;
@@ -85,6 +86,8 @@ function getRandomIntInclusive(min_val, max_val) {
 }
 
 function displayMap(themap, x, y, visibility) {
+  return renderMap(themap, x, y, visibility);
+
   var viz = visibility || 3;
   var xstart = x - viz;
   if (xstart < 0) {
@@ -110,17 +113,19 @@ function displayMap(themap, x, y, visibility) {
     for (var xv = x - viz; xv <= x + viz; xv++) {
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
         // displayTile(themap, xv, yv, yv === y && xv === x);
-        var box = createBoxTile(themap, xv, yv, xv === x && yv === y);
-        box.left = 0 + screenX * 3;
-        box.top = 0 + screenY * 2;
-        screen.append(box);
-        screenX++;
+//        var box = createBoxTile(themap, xv, yv, xv === x && yv === y);
+//        box.left = 0 + screenX * 3;
+//        box.top = 0 + screenY * 2;
+//        screen.append(box);
+//        screenX++;
+          mapbox.content = 'mm';
       } else {
-        var voidbox = createBoxTileVoid(xv, yv);
-        voidbox.left = 0 + screenX * 3;
-        voidbox.top = 0 + screenY * 2;
-        screen.append(voidbox);
-        screenX++;
+        mapbox.content = 'mm';
+//        var voidbox = createBoxTileVoid(xv, yv);
+//        voidbox.left = 0 + screenX * 3;
+//        voidbox.top = 0 + screenY * 2;
+//        screen.append(voidbox);
+//        screenX++;
       }
       if (xv === x && yv === y) {
         debug('X: ' + x + ' Y: ' + y);
@@ -132,6 +137,26 @@ function displayMap(themap, x, y, visibility) {
     screenX = 0;
     screenY++;
   }
+}
+
+function renderMap(themap, map_x, map_y) {
+  var view = worldlib.getView(themap, map_x, map_y, 10);
+  debug(Object.keys(view).length);
+  debug(Object.keys(view[0]).length);
+  var box_data = '';
+  debug(map_x + '/' + map_y);
+
+  for (var y = 0; y <= Object.keys(view).length - 1; y++) {
+    for (var x = 0; x <= Object.keys(view[y]).length - 1; x++) {
+      if (view[x][y].colorized) {
+        box_data += view[x][y].colorized;
+      } else {
+        box_data += ' ';
+      }
+    }
+    box_data += os.EOL;
+  }
+  mapbox.content = box_data;
 }
 
 function displayTile(themap, x, y, my_position) {
