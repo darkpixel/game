@@ -87,60 +87,6 @@ function getRandomIntInclusive(min_val, max_val) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function displayMap(themap, x, y, visibility) {
-  return renderMap(themap, x, y, visibility);
-
-  var viz = visibility || 3;
-  var xstart = x - viz;
-  if (xstart < 0) {
-    xstart = 0;
-  }
-  var ystart = y - viz;
-  if (ystart < 0) {
-    ystart = 0;
-  }
-  var xend = x + viz;
-  if (xend > Object.keys(themap).length - 1) {
-    xend = Object.keys(themap).length - 1;
-  }
-  var yend = y + viz;
-  if (yend > Object.keys(themap[0]).length - 1) {
-    yend = Object.keys(themap[0]).length - 1;
-  }
-
-  var screenX = 0;
-  var screenY = 0;
-
-  for (var yv = y - viz; yv <= y + viz; yv++) {
-    for (var xv = x - viz; xv <= x + viz; xv++) {
-      if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
-        // displayTile(themap, xv, yv, yv === y && xv === x);
-//        var box = createBoxTile(themap, xv, yv, xv === x && yv === y);
-//        box.left = 0 + screenX * 3;
-//        box.top = 0 + screenY * 2;
-//        screen.append(box);
-//        screenX++;
-          mapbox.content = 'mm';
-      } else {
-        mapbox.content = 'mm';
-//        var voidbox = createBoxTileVoid(xv, yv);
-//        voidbox.left = 0 + screenX * 3;
-//        voidbox.top = 0 + screenY * 2;
-//        screen.append(voidbox);
-//        screenX++;
-      }
-      if (xv === x && yv === y) {
-        debug('X: ' + x + ' Y: ' + y);
-        debug(themap[x][y]);
-      }
-    }
-    // process.stdout.write(os.EOL);
-    // process.stdout.write(os.EOL);
-    screenX = 0;
-    screenY++;
-  }
-}
-
 function renderMap(themap, map_x, map_y) {
   var view = worldlib.getView(themap, map_x, map_y, 10);
   debug(Object.keys(view).length);
@@ -221,7 +167,7 @@ screen.key('left', function(ch, key) {
   } else {
     my_x--;
   }
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 });
 
 screen.key('right', function(ch, key) {
@@ -230,7 +176,7 @@ screen.key('right', function(ch, key) {
   } else {
     my_x++;
   }
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 });
 
 screen.key('up', function(ch, key) {
@@ -239,7 +185,7 @@ screen.key('up', function(ch, key) {
   } else {
     my_y--;
   }
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 });
 
 screen.key('down', function(ch, key) {
@@ -248,7 +194,7 @@ screen.key('down', function(ch, key) {
   } else {
     my_y++;
   }
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 });
 
 screen.key('s', function(ch, key) {
@@ -264,17 +210,17 @@ screen.key('l', function(ch, key) {
   debug('load complete');
   my_x = 0;
   my_y = 0;
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 });
 
 function menucallback(tile_type) {
   debug(tile_type);
   world.map[my_x][my_y] = tile_type;
-  displayMap(world.map, my_x, my_y, my_sight);
+  renderMap(world.map, my_x, my_y, my_sight);
 }
 
 
 screen.append(listbar);
 screen.title = world.name;
-displayMap(world.map, my_x, my_y, my_sight);
+renderMap(world.map, my_x, my_y, my_sight);
 screen.render();
