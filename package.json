@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/darkpixel/game#readme",
   "dependencies": {
+    "better-console": "^0.2.4",
     "blessed": "^0.1.81",
     "colors": "^1.1.2",
     "debug": "^2.2.0",
