@@ -3,6 +3,7 @@
 var console = require('better-console');
 var os = require('os');
 var fs = require('fs');
+var lib = require('./lib');
 var colors = require('colors/safe');
 var debug = require('debug')('chargen');
 var rl = require('readline-sync');
@@ -82,17 +83,7 @@ var char_types = {
   }
 };
 
-function saveData() {
-  var fs = require('fs');
-  fs.writeFileSync('./characters.json', JSON.stringify(chars, null, 2));
-}
-
-function loadData() {
-  var fs = require('fs');
-  chars = JSON.parse(fs.readFileSync('./characters.json'));
-}
-
-loadData();
+chars = lib.loadData('characters');
 
 chars.players.forEach(function(player) {
   console.warn(player.real_name);
