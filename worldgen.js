@@ -21,8 +21,16 @@ if (world && overwrite || !world) {
   debug('Creating a new world');
   world = {};
 
-  var x_size = rl.questionInt('How many horizontal tiles do you want on the map? ');
+  var x_size = rl.questionInt('How many horizontal tiles do you want on the map (1-2000)? ');
+  if (x_size < 1 || x_size > 2000) {
+    console.warn('Invalid size: ' + x_size);
+    return;
+  }
   var y_size = rl.questionInt('How many verticle tiles do you want on the map? ');
+  if (y_size < 1 || y_size > 2000) {
+    console.warn('Invalid size: ' + y_size);
+    return;
+  }
   var world_name = rl.question('What would you like to name your world? ');
   world.name = world_name;
 
