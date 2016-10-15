@@ -32,7 +32,7 @@ if (world && overwrite || !world) {
   var edge_tile = tile_types[tile_select[edge_tile_number]];
   debug('Edge tile selected: ' + edge_tile);
 
-  var primary_tile_number = rl.keyInSelect(Object.keys(tile_types), 'What is the primary land type for your world?', {cancel: false});
+  var primary_tile_number = rl.keyInSelect(Object.keys(tile_types), 'What is the primary land type for your world?', {cancel: 'Random'});
   var primary_tile = tile_types[tile_select[primary_tile_number]];
   debug('Primary tile selected: ' + primary_tile);
 
@@ -51,21 +51,20 @@ if (world && overwrite || !world) {
       world.map[x] = {};
     }
     for (var y = 0; y <= y_size; y++) {
+      if (primary_tile) {
+        world.map[x][y] = primary_tile;
+      } else {
+        world.map[x][y] = lib.getRandomObject(tile_types);
+      }
+
       if (x === 0 || y === 0 || x === x_size || y === y_size) {
         if (edge_tile) {
           world.map[x][y] = edge_tile;
-        } else {
-          world.map[x][y] = tile_types.impassablemountain;
-        }
-      } else {
-        if (primary_tile) {
-          world.map[x][y] = primary_tile;
-        } else {
-          world.map[x][y] = lib.getRandomObject(tile_types);
         }
       }
     }
   }
+
   lib.saveData('world', world);
   console.log(world.name + ' created and saved.');
   debug(world);
