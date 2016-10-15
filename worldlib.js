@@ -31,15 +31,11 @@ module.exports.getView = function (themap, x, y, visibility) {
   debug('Corrected visibility: ' + viz);
 
   for (var yv = y - viz; yv <= y + viz; yv++) {
-    debug('yv: ' + yv);
     for (var xv = x - viz; xv <= x + viz; xv++) {
-      debug('xv: ' + xv);
       if (!view[view_x]) {
-        debug('Creating x row ' + view_x);
         view[view_x] = {};
       }
       if (!view[view_x][view_y]) {
-        debug('Creating y row ' + view_y);
         view[view_x][view_y] = {};
       }
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
