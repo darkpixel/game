@@ -49,7 +49,7 @@ if (world && overwrite || !world) {
   console.log('of light, searing the black edge of the horizon with white fire. Fierce shafts of colour streaked');
   console.log('through the thin atmosphere beneath them.');
   console.log('');
-  console.log('"The fires of dawn…!" breathed Zaphod. "The twin suns of Soulianis and Rahm...!"');
+  console.log('"The fires of dawn...!" breathed Zaphod. "The twin suns of Soulianis and Rahm...!"');
   console.log('');
 
   world.map = {};
