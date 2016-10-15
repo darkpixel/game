@@ -8,7 +8,7 @@ var colors = require('colors/safe');
 var debug = require('debug')('chargen');
 var rl = require('readline-sync');
 var prettyjson = require('prettyjson');
-var world = JSON.parse(fs.readFileSync('./world.json'));
+var world = lib.loadData('world');
 var chars = {};
 
 // var char_types = require('./data/character_types.json');
