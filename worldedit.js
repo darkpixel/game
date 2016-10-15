@@ -3,12 +3,13 @@
 var os = require('os');
 var colors = require('colors/safe');
 var blessed = require('blessed');
+var bc = require('blessed-contrib');
 var lib = require('./lib');
 var my_x = 0;
 var my_y = 0;
 var my_sight = 5;
 
-world = lib.loadData('world');
+var world = lib.loadData('world');
 if (!world) {
   console.log('There is no world to edit.  Perhaps you want to run worldgen?');
   return;
@@ -21,26 +22,26 @@ var screen = blessed.screen({
   debug: true
 });
 
+var grid = new bc.grid({rows: 12, cols: 12, screen: screen});
+
+var mapbox = grid.set(0, 0, 12, 3, blessed.box, {
+  title: 'mapdata'
+});
+
+var tlog = grid.set(0, 3, 12, 9, blessed.log, {
+  label: world.name,
+  title: 'grid data'
+});
+
 screen.key(['escape', 'q', 'C-c'], function(ch, key) {
   return screen.destroy();
 });
 
-var tlog = blessed.log({
-  top: 0,
-  left: 50,
-  title: 'grid data',
-  border: {
-    type: 'line'
-  }
-});
-
 function debug(data) {
-  screen.debug(data);
+  tlog.log(data);
 }
 
 var display_cell_size = 7;
-
-var world = {};
 
 var tile_types = require('./data/tile_types.json');
 
@@ -122,7 +123,7 @@ function displayMap(themap, x, y, visibility) {
         screenX++;
       }
       if (xv === x && yv === y) {
-        tlog.log('X: ' + x + ' Y: ' + y);
+        debug('X: ' + x + ' Y: ' + y);
         debug(themap[x][y]);
       }
     }
@@ -245,7 +246,7 @@ function menucallback(tile_type) {
   displayMap(world.map, my_x, my_y, my_sight);
 }
 
-screen.append(tlog);
+
 screen.append(listbar);
 screen.title = world.name;
 displayMap(world.map, my_x, my_y, my_sight);
