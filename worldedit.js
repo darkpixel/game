@@ -6,6 +6,7 @@ var blessed = require('blessed');
 var bc = require('blessed-contrib');
 var lib = require('./lib');
 var worldlib = require('./worldlib');
+var debug = require('debug')('worldedit');
 
 var my_x = 0;
 var my_y = 0;
@@ -48,26 +49,119 @@ var cmdlog = grid.set(7, 2, 1, 10, blessed.textbox, {
   focused: true
 });
 
-function watch_for_command() {
-  cmdlog.readInput(function(err, data) {
-    cmdlog.clearInput();
-    if (err) {
-      debuglog.log(err);
-    } else {
-      if (data === 'q') {
-        lib.saveData('world', world);
-        return screen.destroy();
-      } else {
-        debuglog.log(data);
-        watch_for_command();
-      }
-    }
-  });
+var key_list = {};
+
+for (var i = 0; i <= Object.keys(tile_types).length - 1; i++) {
+  key_list[i] = {};
+  key_list[i].fn = wrap_change_tile(tile_types[Object.keys(tile_types)[i]]);
+  key_list[i].name = tile_types[Object.keys(tile_types)[i]].name;
 }
-watch_for_command();
+
+cmdlog.on('keypress', function (ch, key) {
+  switch (key.name) {
+    case 'return':
+      break;
+    case 'enter':
+      break;
+    case 'left':
+      if (my_x <= 0) {
+        my_x = 0;
+      } else {
+        my_x--;
+      }
+      cmdlog.content = '';
+      return renderMap(world.map, my_x, my_y, my_sight);
+    case 'right':
+      if (my_x >= Object.keys(world.map).length - 1) {
+        my_x = Object.keys(world.map).length - 1;
+      } else {
+        my_x++;
+      }
+      cmdlog.content = '';
+      return renderMap(world.map, my_x, my_y, my_sight);
+    case 'up':
+      if (my_y <= 0) {
+        my_y = 0;
+      } else {
+        my_y--;
+      }
+      cmdlog.content = '';
+      return renderMap(world.map, my_x, my_y, my_sight);
+    case 'down':
+      if (my_y >= Object.keys(world.map[0]).length - 1) {
+        my_y = Object.keys(world.map[0]).length - 1;
+      } else {
+        my_y++;
+      }
+      cmdlog.content = '';
+      return renderMap(world.map, my_x, my_y, my_sight);
+    default:
+      cmdlog.content += ch;
+  }
+
+  switch (cmdlog.content) {
+    case 's':
+      cmdlog.content = 'save';
+      screen.debug('save triggered');
+      lib.saveData('world', world);
+      screen.debug('save complete');
+      cmdlog.content = '';
+      break;
+    case 'l':
+      cmdlog.content = 'load';
+      screen.debug('load triggered');
+      world = lib.loadData('world');
+      screen.title = world.name;
+      screen.debug('load complete');
+      cmdlog.content = '';
+      my_x = 0;
+      my_y = 0;
+      renderMap(world.map, my_x, my_y, my_sight);
+      break;
+    case 'q':
+      cmdlog.content = 'quit';
+      lib.saveData('world', world);
+      debuglog.log('Escape or CTRL+C pressed');
+      cmdlog.content = '';
+      screen.destroy();
+      break;
+    case '?':
+      cmdlog.content = 'help';
+      for (var ii = 0; ii < Object.keys(key_list).length - 1; ii++) {
+        debuglog.log(ii + ': ' + key_list[ii].name);
+      }
+      cmdlog.content = '';
+      break;
+    default:
+      // Check to see if there is more than one command we could be matching
+      // If not, attempt to execute the command immediately
+      if (!Object.keys(key_list).some(testPartialCommand) || key.name === 'enter' || key.name === 'return') {
+        if (key_list[cmdlog.content]) {
+          key_list[cmdlog.content].fn();
+          cmdlog.content = '';
+        } else {
+          if (!cmdlog.content.length === 0) {
+            debuglog.log('Invalid command: ' + cmdlog.content);
+          }
+          cmdlog.content = '';
+        }
+      }
+      renderMap(world.map, my_x, my_y, my_sight);
+  }
+});
+
+function testPartialCommand(item, index, array) {
+  try {
+    var cmdregexp = new RegExp('^' + cmdlog.content + '[^$]');
+    return cmdregexp.test(item);
+  } catch (err) {
+    return false;
+  }
+}
 
 var debuglog = grid.set(8, 0, 16, 12, blessed.log, {
-  label: '| Log |'
+  label: '| Log |',
+    scrollOnInput: true
 });
 
 function wrap_change_tile(tile_type) {
@@ -94,76 +188,14 @@ function renderMap(themap, map_x, map_y) {
   mapbox.content = box_data;
   var my_tile = worldlib.getTileData(themap, map_x, map_y);
   tlog.content = '> ' + my_tile.name + ' <';
+  screen.render();
 }
 
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+cmdlog.key(['escape', 'C-c'], function(ch, key) {
   lib.saveData('world', world);
+  debuglog.log('Escape or CTRL+C pressed');
   return screen.destroy();
 });
-
-screen.key('left', function(ch, key) {
-  if (my_x <= 0) {
-    my_x = 0;
-  } else {
-    my_x--;
-  }
-  renderMap(world.map, my_x, my_y, my_sight);
-});
-
-screen.key('right', function(ch, key) {
-  if (my_x >= Object.keys(world.map).length - 1) {
-    my_x = Object.keys(world.map).length - 1;
-  } else {
-    my_x++;
-  }
-  renderMap(world.map, my_x, my_y, my_sight);
-});
-
-screen.key('up', function(ch, key) {
-  if (my_y <= 0) {
-    my_y = 0;
-  } else {
-    my_y--;
-  }
-  renderMap(world.map, my_x, my_y, my_sight);
-});
-
-screen.key('down', function(ch, key) {
-  if (my_y >= Object.keys(world.map[0]).length - 1) {
-    my_y = Object.keys(world.map[0]).length - 1;
-  } else {
-    my_y++;
-  }
-  renderMap(world.map, my_x, my_y, my_sight);
-});
-
-screen.key('s', function(ch, key) {
-  screen.debug('save triggered');
-  lib.saveData('world', world);
-  screen.debug('save complete');
-});
-
-screen.key('l', function(ch, key) {
-  screen.debug('load triggered');
-  world = lib.loadData('world');
-  screen.title = world.name;
-  screen.debug('load complete');
-  my_x = 0;
-  my_y = 0;
-  renderMap(world.map, my_x, my_y, my_sight);
-});
-
-
-var terrain_key_list = {};
-
-for (var i = 0; i <= Object.keys(tile_types).length - 1; i++) {
-  screen.key(String(i), wrap_change_tile(tile_types[Object.keys(tile_types)[i]]));
-  terrain_key_list[i] = tile_types[Object.keys(tile_types)[i]].name;
-}
-
-debuglog.log(terrain_key_list);
-
-screen.title = world.name;
 
 screen.title = world.name;
 renderMap(world.map, my_x, my_y, my_sight);
