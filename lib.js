@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var exports = module.exports = {};
 
 var os = require('os');

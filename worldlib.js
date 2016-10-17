@@ -29,29 +29,37 @@ module.exports.getView = function (themap, x, y, visibility) {
   var view = {};
   var view_x = 0;
   var view_y = 0;
+  // build a view object and the ability to track current coordinates in the view object
 
   debug('getView called with X: ' + x + ' Y: ' + y + ' vis: ' + visibility);
-
   var viz = visibility || 3;
-
   debug('Corrected visibility: ' + viz);
 
   for (var yv = y - viz; yv <= y + viz; yv++) {
     for (var xv = x - viz; xv <= x + viz; xv++) {
+      // If the current view x or y coordinate does not exist, create it so we can put data in the dictionary
       if (!view[view_x]) {
         view[view_x] = {};
       }
       if (!view[view_x][view_y]) {
         view[view_x][view_y] = {};
       }
+
+      // Check if we are in the boundaries of the actual map
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
-        view[view_x][view_y] = themap[xv][yv];
+        // If we are in the boundaries of the actual map, add the map tile to the view we are returning
+        Object.assign(view[view_x][view_y], themap[xv][yv]);
+
         if (xv === x && yv === y) {
+          // this is our position on the map, send the tile with a bgWhite color so the user can
+          // identify their location.
           view[view_x][view_y].colorized = colors[themap[xv][yv].color].bgWhite(themap[xv][yv].display);
         } else {
-          view[view_x][view_y].colorized = colors[themap[xv][yv].color](themap[xv][yv].display);
+          // this is a square somewhere else on the map, just send the normal color
+          view[view_x][view_y].colorized = colors[themap[xv][yv].color].bgBlack(themap[xv][yv].display);
         }
       } else {
+        // if we are not in the boundaries of the actual map, return an empty object
         view[view_x][view_y] = {};
       }
       view_x++;
