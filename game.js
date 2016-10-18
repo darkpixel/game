@@ -75,15 +75,6 @@ function wrap_change_tile(tile_type) {
   };
 }
 
-function moveTo(themap, x, y) {
-  debuglog.log('Moving to ' + x + ',' + y);
-  var tile = worldlib.getTileTypeByCoord(themap, x, y);
-  if (tile && !tile.impassable) {
-    return true;
-  }
-  return false;
-}
-
 cmdlog.on('keypress', function (ch, key) {
   switch (key.name) {
     case 'return':
@@ -91,28 +82,28 @@ cmdlog.on('keypress', function (ch, key) {
     case 'enter':
       break;
     case 'left':
-      if (moveTo(world.map, my_x - 1, my_y)) {
+      if (worldlib.canMoveTo(world.map, my_x - 1, my_y)) {
         my_x--;
         cmdlog.content = '';
         return renderMap(world.map, my_x, my_y, my_sight);
       }
       break;
     case 'right':
-      if (moveTo(world.map, my_x + 1, my_y)) {
+      if (worldlib.canMoveTo(world.map, my_x + 1, my_y)) {
         my_x++;
         cmdlog.content = '';
         return renderMap(world.map, my_x, my_y, my_sight);
       }
       break;
     case 'up':
-      if (moveTo(world.map, my_x, my_y - 1)) {
+      if (worldlib.canMoveTo(world.map, my_x, my_y - 1)) {
         my_y--;
         cmdlog.content = '';
         return renderMap(world.map, my_x, my_y, my_sight);
       }
       break;
     case 'down':
-      if (moveTo(world.map, my_x, my_y + 1)) {
+      if (worldlib.canMoveTo(world.map, my_x, my_y + 1)) {
         my_y++;
         cmdlog.content = '';
         return renderMap(world.map, my_x, my_y, my_sight);

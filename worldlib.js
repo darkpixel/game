@@ -35,6 +35,15 @@ module.exports.getTileTypeByCoord = function(themap, x, y) {
   }
 };
 
+module.exports.canMoveTo = function(themap, x, y) {
+  debug('Checking if we can move to ' + x + ',' + y);
+  var tile = module.exports.getTileTypeByCoord(themap, x, y);
+  if (tile && !tile.impassable) {
+    return true;
+  }
+  return false;
+};
+
 module.exports.getView = function (themap, x, y, visibility) {
   // Accepts a copy of the map, curent x and y coordinates along with an optional visibility distance around you
   // and returns a small x/y array of tiles to display.  Visibility is optional and defaults to 3 tiles.
