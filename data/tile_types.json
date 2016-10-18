@@ -1,80 +1,80 @@
 {
   "wall": {
-    "name": "wall",
+    "name": "Wall",
     "display": "WW",
     "color": "blue",
     "danger": 0,
     "impassable": true
   },
   "plains": {
-    "name": "plains",
+    "name": "Plains",
     "display": "--",
     "color": "green",
     "danger": 10
   },
   "impassablemountain": {
-    "name": "impassable mountains",
+    "name": "Impass Mtns",
     "display": "MM",
     "color": "white",
     "danger": 0,
     "impassable": true
   },
   "desert": {
-    "name": "desert",
+    "name": "Desert",
     "display": "..",
     "color": "yellow",
     "danger": 15
   },
   "mountains": {
-    "name": "mountains",
+    "name": "Mountains",
     "display": "mm",
     "color": "magenta",
     "danger": 15
   },
   "road": {
-    "name": "road",
+    "name": "Road",
     "display": "||",
     "color": "white",
     "danger": 5
   },
   "wastelands": {
-    "name": "wastelands",
+    "name": "Wastelands",
     "display": "ww",
     "color": "green",
     "danger": 45
   },
   "river": {
-    "name": "river",
+    "name": "River",
     "display": "~~",
     "color": "blue",
     "danger": 15
   },
   "lake": {
-    "name": "lake",
+    "name": "Lake",
     "display": "~~",
     "color": "blue",
     "danger": 15
   },
   "swamp": {
-    "name": "swamp",
+    "name": "Swamp",
     "display": "\"\"",
     "color": "cyan",
     "danger": 30
   },
   "archway": {
-    "name": "archway",
+    "name": "Archway",
     "display": "--",
     "color": "blue",
     "danger": 0
   },
   "radiation": {
-    "name": "radiation",
+    "name": "Radiation",
     "display": "rr",
     "color": "red",
     "danger": 40
   },
   "holostore": {
-    "name": "holo store",
+    "name": "Holo Store",
     "display": "ST",
     "color": "yellow",
     "danger": 0
@@ -110,7 +110,7 @@
     "danger": 0
   },
   "forest": {
-    "name": "forest",
+    "name": "Forest",
     "display": "ff",
     "color": "green",
     "danger": 12
