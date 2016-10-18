@@ -3,7 +3,7 @@ var exports = module.exports = {};
 var key_list = {};
 
 module.exports.addCommand = function(key, name, fn) {
-  var possible_keys = 'abcdefghijklmnopqrstuvwxyz';
+  var possible_keys = 'abcdefghijklmnopqrstuvwxyz0123456789';
   var translated_key = key;
   if (key.length === 0) {
     for (var i = 0; i <= possible_keys.split('').length - 1; i++) {
