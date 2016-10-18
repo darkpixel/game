@@ -1,41 +1,35 @@
 {
-  "water": {
-    "name": "water",
+  "wall": {
+    "name": "wall",
     "display": "WW",
     "color": "blue",
-    "danger": 5
+    "danger": 0,
+    "impassable": true
   },
   "plains": {
     "name": "plains",
     "display": "--",
     "color": "green",
-    "danger": 5
+    "danger": 10
   },
   "impassablemountain": {
     "name": "impassable mountains",
     "display": "MM",
     "color": "white",
-    "danger": 5,
-    "impassable": true
-  },
-  "volcano": {
-    "name": "volcano",
-    "display": "VV",
-    "color": "red",
-    "danger": 5,
+    "danger": 0,
     "impassable": true
   },
   "desert": {
     "name": "desert",
     "display": "..",
     "color": "yellow",
-    "danger": 5
+    "danger": 15
   },
   "mountains": {
     "name": "mountains",
     "display": "mm",
     "color": "magenta",
-    "danger": 5
+    "danger": 15
   },
   "road": {
     "name": "road",
@@ -47,30 +41,78 @@
     "name": "wastelands",
     "display": "ww",
     "color": "green",
-    "danger": 5
+    "danger": 45
   },
   "river": {
     "name": "river",
     "display": "~~",
     "color": "blue",
-    "danger": 5
+    "danger": 15
+  },
+  "lake": {
+    "name": "lake",
+    "display": "~~",
+    "color": "blue",
+    "danger": 15
   },
   "swamp": {
     "name": "swamp",
     "display": "\"\"",
     "color": "cyan",
-    "danger": 5
+    "danger": 30
+  },
+  "archway": {
+    "name": "archway",
+    "display": "--",
+    "color": "blue",
+    "danger": 0
   },
   "radiation": {
     "name": "radiation",
     "display": "rr",
     "color": "red",
-    "danger": 5
+    "danger": 40
+  },
+  "holostore": {
+    "name": "holo store",
+    "display": "ST",
+    "color": "yellow",
+    "danger": 0
+  },
+  "sssscenter": {
+    "name": "SSSS Center",
+    "display": "SS",
+    "color": "yellow",
+    "danger": 0
+  },
+  "sacrebase": {
+    "name": "Sacre Base",
+    "display": "11",
+    "color": "yellow",
+    "danger": 0
+  },
+  "upylon": {
+    "name": "U-Pylon",
+    "display": "/\\",
+    "color": "red",
+    "danger": 0
+  },
+  "dpylon": {
+    "name": "D-Pylon",
+    "display": "\\/",
+    "color": "red",
+    "danger": 0
+  },
+  "acmeweapons": {
+    "name": "ACME Weapons",
+    "display": "AW",
+    "color": "yellow",
+    "danger": 0
   },
   "forest": {
     "name": "forest",
     "display": "ff",
     "color": "green",
-    "danger": 5
+    "danger": 12
   }
 }
