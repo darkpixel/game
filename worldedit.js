@@ -58,19 +58,40 @@ cmdlib.addCommand('s', 'save', function() {
 cmdlib.addCommand('l', 'load', function() {
   world = lib.loadData('world');
   screen.title = world.name;
-  my_x = 0;
-  my_y = 0;
+  if (world.start_x) {
+    my_x = world.start_x;
+  } else {
+    my_x = 0;
+  }
+
+  if (world.start_y) {
+    my_y = world.start_y;
+  } else {
+    my_y = 0;
+  }
   renderMap(world.map, my_x, my_y, my_sight);
   debuglog.log('Loaded');
 });
 
+cmdlib.addCommand('q', 'quit', function() {
+  lib.saveData('world', world);
+  screen.destroy();
+});
+
+cmdlib.addCommand('x', 'set start coordinates', function() {
+  world.start_x = my_x;
+  world.start_y = my_y;
+  debuglog.log('Start coordinates set to: ' + world.start_x + 'x' + world.start_y);
+});
+
 for (var i = 0; i <= Object.keys(tile_types).length - 1; i++) {
-  cmdlib.addCommand('', tile_types[Object.keys(tile_types)[i]].name, wrap_change_tile(tile_types[Object.keys(tile_types)[i]]));
+  cmdlib.addCommand('', tile_types[Object.keys(tile_types)[i]].name, wrap_change_tile(Object.keys(tile_types)[i]));
 }
 
 function wrap_change_tile(tile_type) {
   return function(ch, key) {
-    world.map[my_x][my_y] = tile_type;
+    screen.debug('Setting tile to: ' + tile_type);
+    world.map[my_x][my_y].tile = tile_type;
   };
 }
 
@@ -117,13 +138,6 @@ cmdlog.on('keypress', function (ch, key) {
   }
 
   switch (cmdlog.content) {
-    case 'q':
-      cmdlog.content = 'quit';
-      lib.saveData('world', world);
-      debuglog.log('Escape or CTRL+C pressed');
-      cmdlog.content = '';
-      screen.destroy();
-      break;
     case '?':
       cmdlog.content = 'help';
       for (var ii = 0; ii <= Object.keys(cmdlib.getCommands()).length - 1; ii++) {
@@ -152,23 +166,31 @@ var debuglog = grid.set(8, 0, 16, 12, blessed.log, {
     scrollOnInput: true
 });
 
-function renderMap(themap, map_x, map_y) {
-  var view = worldlib.getView(themap, map_x, map_y, 10);
+function renderMap(themap, map_x, map_y, my_sight) {
+  var sight = my_sight || 3;
+  var view = worldlib.getView(themap, map_x, map_y, sight);
   var box_data = '';
 
   for (var y = 0; y <= Object.keys(view).length - 1; y++) {
     for (var x = 0; x <= Object.keys(view[y]).length - 1; x++) {
       if (view[x][y].colorized) {
-        box_data += view[x][y].colorized;
+        box_data += view[x][y].colorized + ' ';
       } else {
-        box_data += '  ';
+        box_data += '   ';
       }
     }
     box_data += os.EOL;
   }
   mapbox.content = box_data;
-  var my_tile = worldlib.getTileData(themap, map_x, map_y);
-  tlog.content = '> ' + my_tile.name + ' <';
+  var my_tile = worldlib.getTileByType(themap[map_x][map_y].tile);
+  var my_tile_name = my_tile.name;
+
+  if (my_tile.name.length < 17) {
+    for (var i = my_tile.name.length; i <= 17; i++) {
+      my_tile_name += '.';
+    }
+  }
+  tlog.content = '> ' + my_tile_name + ' <';
   screen.render();
 }
 
@@ -177,6 +199,18 @@ cmdlog.key(['escape', 'C-c'], function(ch, key) {
   debuglog.log('Escape or CTRL+C pressed');
   return screen.destroy();
 });
+
+if (world.start_x) {
+  my_x = world.start_x;
+} else {
+  my_x = 0;
+}
+
+if (world.start_y) {
+  my_y = world.start_y;
+} else {
+  my_y = 0;
+}
 
 screen.title = world.name;
 renderMap(world.map, my_x, my_y, my_sight);

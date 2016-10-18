@@ -20,6 +20,11 @@ module.exports.getTileData = function(themap, x, y) {
   return themap[x][y];
 };
 
+module.exports.getTileByType = function(type) {
+  debug('Looking up tile type: ' + type);
+  return tile_types[type];
+};
+
 module.exports.getView = function (themap, x, y, visibility) {
   // Accepts a copy of the map, curent x and y coordinates along with an optional visibility distance around you
   // and returns a small x/y array of tiles to display.  Visibility is optional and defaults to 3 tiles.
@@ -49,14 +54,15 @@ module.exports.getView = function (themap, x, y, visibility) {
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
         // If we are in the boundaries of the actual map, add the map tile to the view we are returning
         Object.assign(view[view_x][view_y], themap[xv][yv]);
+        var tile = module.exports.getTileByType(view[view_x][view_y].tile);
 
         if (xv === x && yv === y) {
           // this is our position on the map, send the tile with a bgWhite color so the user can
           // identify their location.
-          view[view_x][view_y].colorized = colors[themap[xv][yv].color].bgWhite(themap[xv][yv].display);
+          view[view_x][view_y].colorized = colors[tile.color].bgWhite(tile.display);
         } else {
           // this is a square somewhere else on the map, just send the normal color
-          view[view_x][view_y].colorized = colors[themap[xv][yv].color].bgBlack(themap[xv][yv].display);
+          view[view_x][view_y].colorized = colors[tile.color].bgBlack(tile.display);
         }
       } else {
         // if we are not in the boundaries of the actual map, return an empty object
