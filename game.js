@@ -55,31 +55,7 @@ var cmdlog = grid.set(7, 2, 1, 10, blessed.textbox, {
   focused: true
 });
 
-cmdlib.addCommand('s', 'save', function() {
-  lib.saveData('world', world);
-  debuglog.log('Saved');
-});
-
-cmdlib.addCommand('l', 'load', function() {
-  world = lib.loadData('world');
-  screen.title = world.name;
-  if (world.start_x) {
-    my_x = world.start_x;
-  } else {
-    my_x = 0;
-  }
-
-  if (world.start_y) {
-    my_y = world.start_y;
-  } else {
-    my_y = 0;
-  }
-  renderMap(world.map, my_x, my_y, my_sight);
-  debuglog.log('Loaded');
-});
-
 cmdlib.addCommand('q', 'quit', function() {
-  lib.saveData('world', world);
   screen.destroy();
 });
 
@@ -210,7 +186,6 @@ function renderMap(themap, map_x, map_y, my_sight) {
 }
 
 cmdlog.key(['escape', 'C-c'], function(ch, key) {
-  lib.saveData('world', world);
   debuglog.log('Escape or CTRL+C pressed');
   return screen.destroy();
 });
