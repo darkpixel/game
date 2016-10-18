@@ -11,7 +11,7 @@ var cmdlib = require('./cmdlib');
 
 var my_x = 0;
 var my_y = 0;
-var my_sight = 5;
+var my_sight = 7;
 
 var world = lib.loadData('world');
 var tile_types = lib.loadDefs('tile_types');
