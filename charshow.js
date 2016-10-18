@@ -9,6 +9,7 @@ var debug = require('debug')('chargen');
 var rl = require('readline-sync');
 var prettyjson = require('prettyjson');
 var world = lib.loadData('world');
+var worldlib = require('./worldlib');
 var chars = {};
 
 if (!world) {
@@ -48,15 +49,16 @@ function displayMap(themap, x, y, visibility) {
 }
 
 function displayTile(themap, x, y, my_position) {
+  var tile = worldlib.getTileByType(themap[x][y].tile);
   if (my_position) {
-    process.stdout.write(colors.bgWhite(colors[themap[x][y].color](themap[x][y].display)) + ' ');
+    process.stdout.write(colors.bgWhite(colors[tile.color](tile.display)) + ' ');
   } else {
-    process.stdout.write(colors[themap[x][y].color](themap[x][y].display) + ' ');
+    process.stdout.write(colors[tile.color](tile.display) + ' ');
   }
 }
 
 function displayEmptyTile() {
-  process.stdout.write('__ ');
+  process.stdout.write('   ');
 }
 
 chars = lib.loadData('characters');
