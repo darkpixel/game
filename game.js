@@ -99,6 +99,15 @@ function wrap_change_tile(tile_type) {
   };
 }
 
+function moveTo(themap, x, y) {
+  debuglog.log('Moving to ' + x + ',' + y);
+  var tile = worldlib.getTileTypeByCoord(themap, x, y);
+  if (tile && !tile.impassable) {
+    return true;
+  }
+  return false;
+}
+
 cmdlog.on('keypress', function (ch, key) {
   switch (key.name) {
     case 'return':
@@ -106,37 +115,33 @@ cmdlog.on('keypress', function (ch, key) {
     case 'enter':
       break;
     case 'left':
-      if (my_x <= 0) {
-        my_x = 0;
-      } else {
+      if (moveTo(world.map, my_x - 1, my_y)) {
         my_x--;
+        cmdlog.content = '';
+        return renderMap(world.map, my_x, my_y, my_sight);
       }
-      cmdlog.content = '';
-      return renderMap(world.map, my_x, my_y, my_sight);
+      break;
     case 'right':
-      if (my_x >= Object.keys(world.map).length - 1) {
-        my_x = Object.keys(world.map).length - 1;
-      } else {
+      if (moveTo(world.map, my_x + 1, my_y)) {
         my_x++;
+        cmdlog.content = '';
+        return renderMap(world.map, my_x, my_y, my_sight);
       }
-      cmdlog.content = '';
-      return renderMap(world.map, my_x, my_y, my_sight);
+      break;
     case 'up':
-      if (my_y <= 0) {
-        my_y = 0;
-      } else {
+      if (moveTo(world.map, my_x, my_y - 1)) {
         my_y--;
+        cmdlog.content = '';
+        return renderMap(world.map, my_x, my_y, my_sight);
       }
-      cmdlog.content = '';
-      return renderMap(world.map, my_x, my_y, my_sight);
+      break;
     case 'down':
-      if (my_y >= Object.keys(world.map[0]).length - 1) {
-        my_y = Object.keys(world.map[0]).length - 1;
-      } else {
+      if (moveTo(world.map, my_x, my_y + 1)) {
         my_y++;
+        cmdlog.content = '';
+        return renderMap(world.map, my_x, my_y, my_sight);
       }
-      cmdlog.content = '';
-      return renderMap(world.map, my_x, my_y, my_sight);
+      break;
     default:
       cmdlog.content += ch;
   }

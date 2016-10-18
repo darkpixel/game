@@ -25,6 +25,16 @@ module.exports.getTileByType = function(type) {
   return tile_types[type];
 };
 
+module.exports.getTileTypeByCoord = function(themap, x, y) {
+  if (y > Object.keys(themap[0]).length - 1 || y < 0) {
+    return null;
+  } else if (x > Object.keys(themap).length - 1 || x < 0) {
+      return null;
+  } else {
+    return tile_types[themap[x][y].tile];
+  }
+};
+
 module.exports.getView = function (themap, x, y, visibility) {
   // Accepts a copy of the map, curent x and y coordinates along with an optional visibility distance around you
   // and returns a small x/y array of tiles to display.  Visibility is optional and defaults to 3 tiles.
