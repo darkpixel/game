@@ -166,13 +166,19 @@ function renderMap(themap, map_x, map_y, my_sight) {
       tile_name += '.';
     }
   }
-  tlog.content = '> ' + tile_name + ' <';
+  tlog.content = colors.red('> ') + tile_name + colors.red(' <');
   tlog.content += os.EOL + os.EOL;
-  tlog.content += 'Location..: ' + my_x + ',' + my_y + os.EOL;
-  tlog.content += 'Dist/Zone.: ?' + os.EOL;
-  tlog.content += 'Danger....: ' + tile.danger + '%' + os.EOL;
+  tlog.content += colors.blue('Location..: ') + my_x + ',' + my_y + os.EOL;
+  tlog.content += colors.blue('Dist/Zone.: ') + '?' + os.EOL;
+  tlog.content += colors.blue('Danger....: ') + tile.danger + '%' + os.EOL;
   tlog.content += os.EOL;
-  tlog.content += 'Time Left.: infinite';
+  tlog.content += colors.blue('Time Left.: ') + 'infinite';
+  slog.content = colors.blue('Health....: ') + '25/25' + os.EOL;
+  slog.content += colors.blue('Attributes: ') + '16/16/16' + os.EOL;
+  slog.content += os.EOL;
+  slog.content += colors.blue('Experience: ') + '38' + os.EOL;
+  slog.content += colors.blue('Level.....: ') + '1' + os.EOL;
+  slog.content += colors.blue('Hunger....: ') + colors.green('Minimal') + os.EOL;
   screen.render();
 }
 
