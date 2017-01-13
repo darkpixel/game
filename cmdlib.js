@@ -23,7 +23,11 @@ module.exports.commandExists = function(command) {
 };
 
 module.exports.getCommand = function(command) {
-  return key_list[command].fn;
+  if (key_list[command]) {
+    return key_list[command].fn;
+  } else {
+    return null;
+  }
 };
 
 module.exports.getCommands = function() {
