@@ -37,11 +37,11 @@ if (world && overwrite || !world) {
   var tile_select = Object.keys(tile_types);
 
   var edge_tile_number = rl.keyInSelect(tile_select, 'Please select a tile type for the edges of your map', {cancel: 'No specific edge tile'});
-  var edge_tile = tile_types[tile_select[edge_tile_number]];
+  var edge_tile = tile_select[edge_tile_number];
   debug('Edge tile selected: ' + edge_tile);
 
   var primary_tile_number = rl.keyInSelect(Object.keys(tile_types), 'What is the primary land type for your world?', {cancel: 'Random'});
-  var primary_tile = tile_types[tile_select[primary_tile_number]];
+  var primary_tile = tile_select[primary_tile_number];
   debug('Primary tile selected: ' + primary_tile);
 
   console.log('Out of the utter blackness stabbed a sudden point of blinding light. It crept up by slight degrees');
@@ -53,20 +53,30 @@ if (world && overwrite || !world) {
   console.log('');
 
   world.map = {};
-  for (var x = 0; x <= x_size; x++) {
+  debug('Edge tile: ' + edge_tile);
+  debug('Primary tile: ' + primary_tile);
+  // Loop through the x dimension of the map
+  for (var x = 0; x < x_size; x++) {
     if (!world.map[x]) {
+      // If the x array does not exist, create it
       world.map[x] = {};
     }
-    for (var y = 0; y <= y_size; y++) {
+    // Loop through the y dimension of the map
+    for (var y = 0; y < y_size; y++) {
       if (primary_tile) {
-        world.map[x][y] = primary_tile;
+        world.map[x][y] = tile_types[primary_tile];
+        world.map[x][y].type = primary_tile;
       } else {
-        world.map[x][y] = lib.getRandomObject(tile_types);
+        var random_number = lib.getRandom(0, Object.keys(tile_types).length - 1);
+        world.map[x][y] = tile_types[Object.keys(tile_types)[random_number]];
+        world.map[x][y].type = Object.keys(tile_types)[random_number];
       }
 
       if (x === 0 || y === 0 || x === x_size || y === y_size) {
+        // If we are dealign with the edge of the map, create an edge tile
         if (edge_tile) {
-          world.map[x][y] = edge_tile;
+          world.map[x][y] = tile_types[edge_tile];
+          world.map[x][y].type = edge_tile;
         }
       }
     }
@@ -77,7 +87,6 @@ if (world && overwrite || !world) {
   console.log('"Or whatever" said Ford quietly.');
   console.log('');
   console.log(world.name + ' created and saved.');
-  debug(world);
 } else {
   console.log('Aborting...');
 }

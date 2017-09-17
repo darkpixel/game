@@ -73,7 +73,10 @@ module.exports.getView = function (themap, x, y, visibility) {
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
         // If we are in the boundaries of the actual map, add the map tile to the view we are returning
         Object.assign(view[view_x][view_y], themap[xv][yv]);
-        var tile = module.exports.getTileByType(view[view_x][view_y].tile);
+        debug(JSON.stringify(view));
+        debug('Getting tile x: ' + view_x + ' y: ' + view_y + ' ' + JSON.stringify(view[view_x][view_y]));
+        var tile = module.exports.getTileByType(view[view_x][view_y].type);
+        debug('The tile: ' + JSON.stringify(tile));
 
         if (xv === x && yv === y) {
           // this is our position on the map, send the tile with a bgWhite color so the user can
