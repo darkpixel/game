@@ -31,7 +31,7 @@ module.exports.getTileTypeByCoord = function(themap, x, y) {
   } else if (x > Object.keys(themap).length - 1 || x < 0) {
       return null;
   } else {
-    return tile_types[themap[x][y].tile];
+    return tile_types[themap[x][y].type];
   }
 };
 
@@ -73,7 +73,6 @@ module.exports.getView = function (themap, x, y, visibility) {
       if (xv >= 0 && yv >= 0 && xv <= Object.keys(themap).length - 1 && yv <= Object.keys(themap[0]).length - 1) {
         // If we are in the boundaries of the actual map, add the map tile to the view we are returning
         Object.assign(view[view_x][view_y], themap[xv][yv]);
-        debug(JSON.stringify(view));
         debug('Getting tile x: ' + view_x + ' y: ' + view_y + ' ' + JSON.stringify(view[view_x][view_y]));
         var tile = module.exports.getTileByType(view[view_x][view_y].type);
         debug('The tile: ' + JSON.stringify(tile));

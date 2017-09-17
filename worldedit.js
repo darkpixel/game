@@ -91,7 +91,7 @@ for (var i = 0; i <= Object.keys(tile_types).length - 1; i++) {
 function wrap_change_tile(tile_type) {
   return function(ch, key) {
     screen.debug('Setting tile to: ' + tile_type);
-    world.map[my_x][my_y].tile = tile_type;
+    world.map[my_x][my_y].type = tile_type;
   };
 }
 
