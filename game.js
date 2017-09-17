@@ -158,7 +158,7 @@ function renderMap(themap, map_x, map_y, my_sight) {
     box_data += os.EOL;
   }
   mapbox.content = box_data;
-  var tile = worldlib.getTileByType(themap[map_x][map_y].tile);
+  var tile = worldlib.getTileByType(themap[map_x][map_y].type);
   var tile_name = tile.name;
 
   if (tile.name.length < 17) {
