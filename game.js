@@ -47,7 +47,7 @@ var slog = grid.set(0, 7, 7, 5, blessed.text, {
   label: '| Status |'
 });
 
-var cmdlog = grid.set(7, 2, 1, 10, blessed.textbox, {
+var cmdlog = grid.set(7, 2, 2, 10, blessed.textbox, {
   label: '| CMD |',
   cursor: 'block',
   keys: false,

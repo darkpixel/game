@@ -11,7 +11,7 @@ var cmdlib = require('./cmdlib');
 
 var my_x = 0;
 var my_y = 0;
-var my_sight = 7;
+var my_sight = 6;
 
 var world = lib.loadData('world');
 var tile_types = lib.loadDefs('tile_types');
@@ -42,7 +42,7 @@ var slog = grid.set(0, 7, 7, 5, blessed.text, {
   label: '| Status |'
 });
 
-var cmdlog = grid.set(7, 2, 1, 10, blessed.textbox, {
+var cmdlog = grid.set(7, 2, 2, 10, blessed.textbox, {
   label: '| CMD |',
   cursor: 'block',
   keys: false,
