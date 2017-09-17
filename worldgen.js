@@ -72,7 +72,7 @@ if (world && overwrite || !world) {
         world.map[x][y].type = Object.keys(tile_types)[random_number];
       }
 
-      if (x === 0 || y === 0 || x === x_size || y === y_size) {
+      if (x === 0 || y === 0 || x === x_size - 1 || y === y_size - 1) {
         // If we are dealign with the edge of the map, create an edge tile
         if (edge_tile) {
           world.map[x][y] = tile_types[edge_tile];
